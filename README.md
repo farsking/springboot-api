@@ -4,7 +4,7 @@
     你需要有的开发环境: JDK8+  JetBrainsIDEA  Mysql  Mongo  Redis  ActiveMQ  Solr
 
 
-## Features
+# Features
     1) Spring Boot + MyBatis = Web API
 
     2) 统一异常处理
@@ -39,7 +39,7 @@
     
     17) Solr使用示例(完善中...)
 
-### Quick Start
+# Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
 
      2) 运行Application.java
