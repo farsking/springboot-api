@@ -19,7 +19,7 @@
 
     7) 使用配置类代替spring.xml
 
-    8) 单元测试(完善中...)
+    8) 单元测试(完善中)
     
     9) 启用spring缓存管理
     
@@ -37,7 +37,7 @@
     
     16) ActiveMQ示例
     
-    17) Solr使用示例(完善中...)
+    17) Solr示例(完善中)
 
 # Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
