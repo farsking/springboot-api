@@ -20,25 +20,23 @@
 
     7) 使用配置类代替spring.xml
 
-    8) 格式化日志输出
+    8) 单元测试 (还需要完善)
+    
+    9) 启用spring缓存管理
+    
+    10) 集成mysql,mongod,redis,ActiveMQ
+    
+    11) mongo日志存储,访问日志，异常日志,超时响应日志
+    
+    12) mongo序列服务
+    
+    13) 缓存配置服务
 
-    9) 单元测试 (还需要完善)
+    14) token+signature接口安全机制
     
-    10) 启用spring缓存管理
+    15) mysql读写分离
     
-    11) 集成mysql,mongod,redis
-    
-    12) mongo日志存储,访问日志，异常日志,超时响应日志
-    
-    13) mongo序列服务
-    
-    14) 缓存配置服务
-
-    15) token+signature接口安全机制
-    
-    16) mysql读写分离
-    
-    17) ActiveMQ示例
+    16) ActiveMQ示例
 
 ### Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
