@@ -1,0 +1,78 @@
+application-dev.yaml# database source
+spring:
+    dataSource:
+        driverClassName: com.mysql.jdbc.Driver
+        type: org.apache.tomcat.jdbc.pool.DataSource
+        master:
+            url: jdbc:mysql://localhost:3306/yanbin?useUnicode=true&characterEncoding=utf-8
+            username: root
+            password: root
+            driver-class-name: com.mysql.jdbc.Driver
+            filters: stat
+            maxActive: 20
+            initialSize: 1
+            maxWait: 60000
+            minIdle: 1
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            validationQueryTimeout: 900000
+            validationQuery: SELECT SYSDATE() from dual
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            poolPreparedStatements: true
+            maxOpenPreparedStatements: 20
+        slaver1:
+            url: jdbc:mysql://localhost:3306/yanbin?useUnicode=true&characterEncoding=utf-8
+            username: root
+            password: root
+            driver-class-name: com.mysql.jdbc.Driver
+            filters: stat
+            maxActive: 20
+            initialSize: 1
+            maxWait: 60000
+            minIdle: 1
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            validationQueryTimeout: 900000
+            validationQuery: SELECT SYSDATE() from dual
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            poolPreparedStatements: true
+            maxOpenPreparedStatements: 20
+        slaver2:
+            url: jdbc:mysql://localhost:3306/yanbin?useUnicode=true&characterEncoding=utf-8
+            username: root
+            password: root
+            driver-class-name: com.mysql.jdbc.Driver
+            filters: stat
+            maxActive: 20
+            initialSize: 1
+            maxWait: 60000
+            minIdle: 1
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            validationQueryTimeout: 900000
+            validationQuery: SELECT SYSDATE() from dual
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            poolPreparedStatements: true
+            maxOpenPreparedStatements: 20
+    redis:
+        timeout: 2000
+        host: localhost
+        password:
+        port: 6379
+        maxTotal: 100
+        maxIdle: 10
+        maxWaitMillis : 100000
+    data:
+        mongodb:
+            database: test # Database name.
+            host: localhost # Mongo server host.
+            port: 27017 # Mongo server port.
+logging:
+    level:
+      root: debug
