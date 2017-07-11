@@ -2,7 +2,7 @@
     这是一个使用Spring Boot示例项目, 可以直接应用到生产环境的rest API构建项目,
     集成了一个Web框架常用的东东。
 
-    你需要有的开发环境: JDK8+  JetBrains IDEA  Mysql  Mongo  Redis 
+    你需要有的开发环境: JDK8+  JetBrains IDEA  Mysql  Mongo  Redis  ActiveMQ 
 
 
 ## Features
@@ -37,6 +37,8 @@
     15) token+signature接口安全机制
     
     16) mysql读写分离
+    
+    17) ActiveMQ示例
 
 ### Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
