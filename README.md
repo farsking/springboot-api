@@ -37,7 +37,7 @@
     
     16) ActiveMQ示例
     
-    17) Solr示例(完善中)
+    17) Solr示例(完善中)
 
 # Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
