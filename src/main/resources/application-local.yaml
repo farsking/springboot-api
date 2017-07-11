@@ -73,6 +73,11 @@ spring:
             database: test # Database name.
             host: localhost # Mongo server host.
             port: 27017 # Mongo server port.
+    activemq:
+        broker-url: tcp://localhost:61616
+        in-memory: true
+        pool.enabled: false
+
 logging:
     level:
       root: debug

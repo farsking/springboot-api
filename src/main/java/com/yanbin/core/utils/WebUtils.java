@@ -120,6 +120,12 @@ public final class WebUtils {
             return sessionId;
         }
 
+        public static String getId(){
+            WebSession session = get();
+            assert session != null;
+            return session.getId();
+        }
+
         public static String getDeviceId(HttpServletRequest request) {
             return request.getHeader(DEVICE_ID);
         }

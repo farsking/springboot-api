@@ -1,8 +1,10 @@
 package com.yanbin.config;
 
+import com.google.gson.Gson;
 import com.yanbin.filter.AccessInterceptor;
 import com.yanbin.filter.DuplicationInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -37,6 +39,11 @@ public class WebConfig extends  WebMvcConfigurerAdapter {
         registry.addInterceptor(accessInterceptor).addPathPatterns("/**");
         registry.addInterceptor(duplicationInterceptor).addPathPatterns("/**");
         super.addInterceptors(registry);
+    }
+
+    @Bean
+    public Gson gson(){
+        return new Gson();
     }
 
 

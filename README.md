@@ -6,7 +6,7 @@
 
 
 ## Features
-    1) Spring Boot + MyBatis = APIs
+    1) Spring Boot + MyBatis = Web API
 
     2) 统一异常处理
 
@@ -35,6 +35,8 @@
     14) 缓存配置服务
 
     15) token+signature接口安全机制
+    
+    16) mysql读写分离
 
 ### Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql

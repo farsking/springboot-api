@@ -80,7 +80,22 @@ public class UserService {
         return user.getId();
     }
 
-    public User getUser(Long id){
+    public void addUser(String name, String sessionId) {
+        WebSession session = webSessionManager.get(sessionId);
+        if (session != null) {
+            User user = new User();
+            user.setName(name);
+            user.setCode(name);
+            user.setTenantId(session.getTenantId());
+            user.setStatusId(Status.Vaild.getValue());
+            user.setId(sequenceService.newKey(SeqType.User));
+            user.setFailedLogins(0);
+            user.setPassword(SHA256.encrypt("888888"));
+            userMapper.insert(user);
+        }
+    }
+
+    public User getUser(Long id) {
         return userMapper.selectByPrimaryKey(id);
     }
 
