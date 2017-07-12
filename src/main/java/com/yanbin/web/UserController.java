@@ -8,11 +8,11 @@ import com.yanbin.model.param.LoginParam;
 import com.yanbin.model.param.UserMqParam;
 import com.yanbin.service.Producer;
 import com.yanbin.service.UserService;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 /**
  * Created by yanbin on 2017/7/10.
@@ -54,6 +54,14 @@ public class UserController extends BaseController {
         producer.sendMessage(message);
         return wrapperJsonView(null);
     }
+
+    @RequestMapping(value = "search", method = {RequestMethod.OPTIONS, RequestMethod.GET})
+    public Object search(@RequestParam String name) throws IOException, SolrServerException {
+        return wrapperJsonView(userService.solrQueryForMysql(name));
+    }
+
+
+
 
 
 }

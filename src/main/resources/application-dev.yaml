@@ -80,6 +80,9 @@ spring:
             pool:
                 enabled: true
                 max-connections: 50
+    data:
+        solr:
+            host: http://127.0.0.1:8983/solr
 logging:
     level:
       root: debug
