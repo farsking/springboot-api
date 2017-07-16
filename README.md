@@ -37,7 +37,7 @@
     
     16) ActiveMQ示例
     
-    17) Solr示例(完善中)
+    17) Solr示例
     
     18) Scheduling示例
 
