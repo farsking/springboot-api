@@ -3,6 +3,7 @@ package com.yanbin.service;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.yanbin.core.content.ThreadWebContextHolder;
+import com.yanbin.core.content.WebContext;
 import com.yanbin.core.content.WebSession;
 import com.yanbin.core.content.WebSessionManager;
 import com.yanbin.core.sequence.ISequence;
@@ -41,7 +42,7 @@ public class UserService {
 
     @Autowired
 
-    public UserService(UserMapper userMapper, WebSessionManager webSessionManager, SequenceService sequenceService,SolrClient solrClient) {
+    public UserService(UserMapper userMapper, WebSessionManager webSessionManager, SequenceService sequenceService, SolrClient solrClient) {
         this.sequenceService = sequenceService;
         this.userMapper = userMapper;
         this.webSessionManager = webSessionManager;
@@ -70,9 +71,14 @@ public class UserService {
         session.setUserId(user.getId());
         session.setUserName(user.getName());
         session.setTenantId(user.getTenantId());
-        session.setDeviceId(WebUtils.Session.getDeviceId(ThreadWebContextHolder.getContext().getRequest()));
+        WebContext webContext = ThreadWebContextHolder.getContext();
+        if (webContext != null) {
+            session.setDeviceId(WebUtils.Session.getDeviceId(webContext.getRequest()));
+        }
         webSessionManager.add(session);
-        ThreadWebContextHolder.getContext().setWebSession(session);
+        if (webContext != null) {
+            ThreadWebContextHolder.getContext().setWebSession(session);
+        }
         return session;
     }
 
@@ -111,7 +117,7 @@ public class UserService {
 
     public List<User> solrQueryForMysql(String name) throws IOException, SolrServerException {
         SolrQuery solrQuery = new SolrQuery();
-        solrQuery.setQuery("name:"+name);
+        solrQuery.setQuery("name:" + name);
         QueryResponse response = solrClient.query(solrQuery);
         SolrDocumentList solrDocumentList = response.getResults();
         List<Long> ids = Lists.newArrayList();
