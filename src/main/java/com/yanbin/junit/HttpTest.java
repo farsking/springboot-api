@@ -32,7 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class HttpTest   {
 
-    //注入端口号
     @Autowired
     UserService userService;
 
@@ -46,8 +45,6 @@ public class HttpTest   {
 
     @Before
     public void setUp() throws Exception {
-
-
         mvc = MockMvcBuilders.standaloneSetup(new UserController(userService,producer,gson)).build();
     }
 
