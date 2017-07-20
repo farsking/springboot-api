@@ -32,7 +32,7 @@ public class UserController extends BaseController {
         this.gson = gson;
     }
 
-    @ApiMethodAttribute(nonSessionValidation = true, nonSignatureValidation = true)
+    @ApiMethodAttribute(nonSessionValidation = true)
     @RequestMapping(value = "login", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public Object Login(@RequestBody LoginParam loginParam) {
         return wrapperJsonView(userService.Login(loginParam.getUser(), loginParam.getPassword()));
