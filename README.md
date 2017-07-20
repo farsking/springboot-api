@@ -1,7 +1,7 @@
 # Introduction
     这是一个使用Spring Boot示例项目, 可以直接使它做生产环境的骨架，也可以当作一个学习示例，它集成了一个Web框架常用的东东。
 
-    你需要有的开发环境: JDK8+  JetBrainsIDEA  Mysql  Mongo  Redis  ActiveMQ  Solr
+    你需要有的开发环境: JDK8+  Mysql  Mongo  Redis  ActiveMQ  Solr
 
 
 # Features
