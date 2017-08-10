@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class CreateSessionEventHandler {
     private WebSessionManager webSessionManager;
     private Gson gson;
-    private ISequence sequence;
     private UserMapper userMapper;
 
     @Autowired
