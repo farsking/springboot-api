@@ -36,49 +36,12 @@ import java.util.List;
 public class UserService {
 
     private UserMapper userMapper;
-    private WebSessionManager webSessionManager;
-    private ISequence sequenceService;
     private SolrClient solrClient;
 
     @Autowired
-
-    public UserService(UserMapper userMapper, WebSessionManager webSessionManager, SequenceService sequenceService, SolrClient solrClient) {
-        this.sequenceService = sequenceService;
+    public UserService(UserMapper userMapper, SolrClient solrClient) {
         this.userMapper = userMapper;
-        this.webSessionManager = webSessionManager;
         this.solrClient = solrClient;
-    }
-
-    public LoginDTO Login(String userName, String password) {
-        UserExample userExample = new UserExample();
-        userExample.createCriteria().andCodeEqualTo(userName).andPasswordEqualTo(password);
-        List<User> users = userMapper.selectByExample(userExample);
-        Preconditions.checkArgument(!CollectionUtils.isEmpty(users), "用户名或密码不存在");
-        Preconditions.checkArgument(users.size() == 1, "账号异常");
-        User user = users.get(0);
-        WebSession webSession = createSession(user);
-        LoginDTO loginDTO = new LoginDTO();
-        loginDTO.setTokenId(webSession.getId());
-        loginDTO.setCode(user.getCode());
-        loginDTO.setName(webSession.getUserName());
-        loginDTO.setSecretKey(webSession.getSecretKey());
-        return loginDTO;
-    }
-
-    private WebSession createSession(User user) {
-        WebSession session = new WebSession();
-        session.setUserId(user.getId());
-        session.setUserName(user.getName());
-        session.setTenantId(user.getTenantId());
-        WebContext webContext = ThreadWebContextHolder.getContext();
-        if (webContext != null) {
-            session.setDeviceId(WebUtils.Session.getDeviceId(webContext.getRequest()));
-        }
-        webSessionManager.add(session);
-        if (webContext != null) {
-            ThreadWebContextHolder.getContext().setWebSession(session);
-        }
-        return session;
     }
 
     public User getUser(Long id) {

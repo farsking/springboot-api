@@ -57,20 +57,9 @@ public class WebSessionManager {
      * @param webSession Web 会话
      * @return Web 会话。
      */
-    public WebSession add(WebSession webSession) {
-        String sessionId = newId(webSession);
-        webSession.setSecretKey(newSecretKey());
-        return this.add(webSession, sessionId);
-    }
-
-    /**
-     * 新增 Web 会话。
-     *
-     * @param webSession Web 会话
-     * @return Web 会话。
-     */
-    private WebSession add(WebSession webSession, String sessionId) {
+    public WebSession add(WebSession webSession, String sessionId,String secretKey) {
         webSession.setId(sessionId);
+        webSession.setSecretKey(secretKey);
         String cacheKey = getCacheKey(webSession.getId());
         cacheClient.set(cacheKey, new Gson().toJson(webSession, WebSession.class), (int)CacheKeyPrefix.UserSession.getTimeout());
         return webSession;
@@ -100,7 +89,7 @@ public class WebSessionManager {
         return webSession;
     }
 
-    private String newSecretKey() {
+    public String newSecretKey() {
         return UuidUtil.newUuidString();
     }
 
@@ -119,13 +108,13 @@ public class WebSessionManager {
         return key;
     }
 
-    private String newId(WebSession webSession) {
+    public String newId(Long userId) {
         UUID uuid = UUID.randomUUID();
         long least = uuid.getLeastSignificantBits();
         // 如每用户只允许一个会话，保存用户ID（32位）
         // 占用后40位，其中最后8位保留 UUID 数据
         if (singlePerUser) {
-            least = least & 0xffffff00000000ffL | (webSession.getUserId() << 8);
+            least = least & 0xffffff00000000ffL | (userId << 8);
         }
         return Long.toHexString(uuid.getMostSignificantBits())
                 + Long.toHexString(least);

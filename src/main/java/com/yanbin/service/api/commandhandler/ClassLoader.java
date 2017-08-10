@@ -1,4 +1,4 @@
-package com.yanbin.service.commandhandler;
+package com.yanbin.service.api.commandhandler;
 
 import com.google.common.collect.Lists;
 

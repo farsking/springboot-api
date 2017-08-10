@@ -5,8 +5,9 @@ import com.yanbin.core.web.BaseController;
 import com.yanbin.model.param.LoginParam;
 import com.yanbin.model.param.UserParam;
 import com.yanbin.service.UserService;
-import com.yanbin.service.command.CreateUserCommand;
-import com.yanbin.service.commandhandler.CommandBus;
+import com.yanbin.service.api.command.CreateUserCommand;
+import com.yanbin.service.api.command.LoginCommand;
+import com.yanbin.service.api.commandhandler.CommandBus;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,9 @@ public class UserController extends BaseController {
     @ApiMethodAttribute(nonSessionValidation = true, nonSignatureValidation = true)
     @RequestMapping(value = "login", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public Object Login(@RequestBody LoginParam loginParam) {
-        return wrapperJsonView(userService.Login(loginParam.getUser(), loginParam.getPassword()));
+        LoginCommand loginCommand = new LoginCommand(loginParam.getUser(),loginParam.getPassword());
+        commandBus.Send(loginCommand);
+        return wrapperJsonView(loginCommand.getResult());
     }
 
     @ApiMethodAttribute(nonSignatureValidation = true)

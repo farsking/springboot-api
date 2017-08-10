@@ -1,4 +1,4 @@
-package com.yanbin.service.event;
+package com.yanbin.service.api.event;
 
 import java.io.Serializable;
 

@@ -1,7 +1,7 @@
 package com.yanbin.junit;
 
 import com.yanbin.Application;
-import com.yanbin.model.dto.LoginDTO;
+import com.yanbin.dao.model.User;
 import com.yanbin.service.UserService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,9 +28,8 @@ public class ServiceTest {
 
     @Test
     public void test(){
-        LoginDTO loginDTO = userService.Login("yanbin","yanbin");
-        Assert.assertEquals(loginDTO.getCode(),"1");
-
+        User loginDTO = userService.getUser(10L);
+        Assert.assertEquals(java.util.Optional.ofNullable(loginDTO.getId()),10L);
     }
 
 }

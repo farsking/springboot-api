@@ -17,4 +17,8 @@ public class ThreadWebContextHolder {
         THREAD_LOCAL.set(value);
     }
 
+    public static <T> T getBean(String name){
+        return THREAD_LOCAL.get().getBean(name);
+    }
+
 }

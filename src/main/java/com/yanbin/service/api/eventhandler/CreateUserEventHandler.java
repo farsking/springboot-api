@@ -1,4 +1,4 @@
-package com.yanbin.service.eventhandler;
+package com.yanbin.service.api.eventhandler;
 
 import com.google.gson.Gson;
 import com.yanbin.core.sequence.ISequence;
@@ -6,12 +6,10 @@ import com.yanbin.core.sequence.SeqType;
 import com.yanbin.core.sequence.SequenceService;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
-import com.yanbin.service.event.CreateUserEvent;
+import com.yanbin.service.api.event.CreateUserEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
-
-import static com.yanbin.service.eventhandler.EventDestination.UserCreateEvent;
 
 @Component
 public class CreateUserEventHandler {
@@ -26,7 +24,7 @@ public class CreateUserEventHandler {
         this.sequence = sequence;
     }
 
-    @JmsListener(destination = UserCreateEvent)
+    @JmsListener(destination = EventDestination.UserCreateEvent)
     public void receiveQueue(String message) {
         CreateUserEvent createUserEvent = gson.fromJson(message,CreateUserEvent.class);
         User user = new User();
@@ -41,4 +39,6 @@ public class CreateUserEventHandler {
         user.setSession(createUserEvent.getSessionId());
         userMapper.insert(user);
     }
+
+
 }

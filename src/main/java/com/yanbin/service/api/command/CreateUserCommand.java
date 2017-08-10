@@ -1,4 +1,4 @@
-package com.yanbin.service.command;
+package com.yanbin.service.api.command;
 
 public class CreateUserCommand {
     private String name;

@@ -1,4 +1,4 @@
-package com.yanbin.service.commandhandler;
+package com.yanbin.service.api.commandhandler;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
