@@ -1,13 +1,12 @@
 package com.yanbin.web;
 
-import com.google.gson.Gson;
 import com.yanbin.core.content.ApiMethodAttribute;
-import com.yanbin.core.utils.WebUtils;
 import com.yanbin.core.web.BaseController;
 import com.yanbin.model.param.LoginParam;
-import com.yanbin.model.param.UserMqParam;
-import com.yanbin.service.Producer;
+import com.yanbin.model.param.UserParam;
 import com.yanbin.service.UserService;
+import com.yanbin.service.command.CreateUserCommand;
+import com.yanbin.service.commandhandler.CommandBus;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,46 +21,36 @@ import java.io.IOException;
 public class UserController extends BaseController {
 
     private UserService userService;
-    private Producer producer;
-    private Gson gson;
+    private CommandBus commandBus;
 
     @Autowired
-    public UserController(UserService userService,Producer producer,Gson gson) {
+    public UserController(UserService userService, CommandBus commandBus) {
         this.userService = userService;
-        this.producer = producer;
-        this.gson = gson;
+        this.commandBus = commandBus;
     }
 
-    @ApiMethodAttribute(nonSessionValidation = true)
+    @ApiMethodAttribute(nonSessionValidation = true, nonSignatureValidation = true)
     @RequestMapping(value = "login", method = {RequestMethod.OPTIONS, RequestMethod.POST})
     public Object Login(@RequestBody LoginParam loginParam) {
         return wrapperJsonView(userService.Login(loginParam.getUser(), loginParam.getPassword()));
     }
 
     @ApiMethodAttribute(nonSignatureValidation = true)
-    @RequestMapping(value = "add", method = {RequestMethod.OPTIONS, RequestMethod.POST})
-    public Object addUser(@RequestBody String name) {
-        return wrapperJsonView(userService.addUser(name));
+    @RequestMapping(value = "add/mq", method = {RequestMethod.OPTIONS, RequestMethod.POST})
+    public Object addUserMq(@RequestBody UserParam userParam) {
+        CreateUserCommand createUserCommand = new CreateUserCommand(userParam.getName(), userParam.getMobile());
+        commandBus.Send(createUserCommand);
+        return wrapperJsonView(createUserCommand.getResult());
     }
 
-    @ApiMethodAttribute(nonSignatureValidation = true)
-    @RequestMapping(value = "add/mq", method = {RequestMethod.OPTIONS, RequestMethod.POST})
-    public Object addUserMq(@RequestBody String name) {
-        UserMqParam userMqParam = new UserMqParam();
-        userMqParam.setName(name);
-        userMqParam.setSessionId(WebUtils.Session.getId());
-        String message = gson.toJson(userMqParam,UserMqParam.class);
-        producer.sendMessage(message);
-        return wrapperJsonView(null);
+    @RequestMapping(value = "{id}", method = {RequestMethod.OPTIONS, RequestMethod.POST})
+    public Object getByUserId(@PathVariable Long id) {
+        return userService.getUser(id);
     }
 
     @RequestMapping(value = "search", method = {RequestMethod.OPTIONS, RequestMethod.GET})
     public Object search(@RequestParam String name) throws IOException, SolrServerException {
         return wrapperJsonView(userService.solrQueryForMysql(name));
     }
-
-
-
-
 
 }

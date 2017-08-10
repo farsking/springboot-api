@@ -42,20 +42,22 @@ public class SignatureAOP {
         this.gson = gson;
     }
 
-    @Before("execution(public * com.yanbin.web.*.*(..))")
+    @Before("execution(public * com.yanbin.web.*.*Controller(..))")
     public void anyMethod(JoinPoint joinPoint) {
-
         WebContext webContext = ThreadWebContextHolder.getContext();
         assert webContext != null;
         ApiMethodAttribute apiMethodAttribute = webContext.getMethodAttribute();
         boolean nonSignatureValidation = apiMethodAttribute.nonSignatureValidation();
         boolean nonSessionValidation = apiMethodAttribute.nonSessionValidation();
+        if (nonSignatureValidation) {
+            return;
+        }
         Object param = null;
         HttpServletRequest request = webContext.getRequest();
         if (Objects.equals(request.getMethod(), RequestMethod.POST.name())) {
             param = joinPoint.getArgs()[0];
         }
-        validSign(request, nonSignatureValidation, nonSessionValidation, param);
+        validSign(request, nonSessionValidation, param);
     }
 
     /**
@@ -65,57 +67,55 @@ public class SignatureAOP {
     private final static String SIGN_KEY = "signature";
     private final static String TIME_KEY = "timeSpan";
 
-    private void validSign(HttpServletRequest request, boolean nonSignatureValidation, boolean nonSessionValidation, Object param) {
-        if (!nonSignatureValidation) {
-            String clientSign = request.getHeader(SIGN_KEY);
-            if (StringUtils.isBlank(clientSign)) {
-                throw new InvalidSignException();
+    private void validSign(HttpServletRequest request, boolean nonSessionValidation, Object param) {
+        String clientSign = request.getHeader(SIGN_KEY);
+        if (StringUtils.isBlank(clientSign)) {
+            throw new InvalidSignException();
+        }
+        Preconditions.checkArgument(StringUtils.isNotBlank(request.getParameter(TIME_KEY)), "时间戳不存在");
+        long time = Long.parseLong(request.getParameter(TIME_KEY));
+        Date now = new Date();
+        long timeSpan = Math.abs(now.getTime() - time);
+        if (timeSpan <= VALID_TIME_SPAN) {
+            if (cacheClient.get(CacheKeyPrefix.ApiSign.getKey() + clientSign) != null) {
+                throw new UsedSignException();
             }
-            Preconditions.checkArgument(StringUtils.isNotBlank(request.getParameter(TIME_KEY)), "时间戳不存在");
-            long time = Long.parseLong(request.getParameter(TIME_KEY));
-            Date now = new Date();
-            long timeSpan = Math.abs(now.getTime() - time);
-            if (timeSpan <= VALID_TIME_SPAN) {
-                if (cacheClient.get(CacheKeyPrefix.ApiSign.getKey() + clientSign) != null) {
-                    throw new UsedSignException();
-                }
-                String realString;
-                String url = request.getRequestURI();
-                if (param == null) {
-                    if (!nonSessionValidation) {
-                        String secretKey = WebUtils.Session.getSecretKey();
-                        realString = "[" +
-                                secretKey +
-                                "]" +
-                                url + "?" + request.getQueryString() +
-                                "[" +
-                                secretKey +
-                                "]";
-                    } else {
-                        realString = url + "?" + request.getQueryString();
-                    }
+            String realString;
+            String url = request.getRequestURI();
+            if (param == null) {
+                if (!nonSessionValidation) {
+                    String secretKey = WebUtils.Session.getSecretKey();
+                    realString = "[" +
+                            secretKey +
+                            "]" +
+                            url + "?" + request.getQueryString() +
+                            "[" +
+                            secretKey +
+                            "]";
                 } else {
-                    if (!nonSessionValidation) {
-                        String secretKey = WebUtils.Session.getSecretKey();
-                        realString = "[" +
-                                secretKey +
-                                "]" +
-                                url + "?" + request.getQueryString() +
-                                "[" +
-                                gson.toJson(param) +
-                                "]";
-                    } else {
-                        realString = url + "?" + request.getQueryString() + "[" + gson.toJson(param) + "]";
-                    }
-                }
-                String serverSign = SHA256.encrypt(realString);
-                if (!(Objects.equals(serverSign, clientSign))) {
-                    throw new InvalidSignException();
+                    realString = url + "?" + request.getQueryString();
                 }
             } else {
+                if (!nonSessionValidation) {
+                    String secretKey = WebUtils.Session.getSecretKey();
+                    realString = "[" +
+                            secretKey +
+                            "]" +
+                            url + "?" + request.getQueryString() +
+                            "[" +
+                            gson.toJson(param) +
+                            "]";
+                } else {
+                    realString = url + "?" + request.getQueryString() + "[" + gson.toJson(param) + "]";
+                }
+            }
+            String serverSign = SHA256.encrypt(realString);
+            if (!(Objects.equals(serverSign, clientSign))) {
                 throw new InvalidSignException();
             }
-            cacheClient.set(CacheKeyPrefix.ApiSign.getKey() + clientSign, String.valueOf(new Date().getTime()), (int) CacheKeyPrefix.ApiSign.getTimeout());
+        } else {
+            throw new InvalidSignException();
         }
+        cacheClient.set(CacheKeyPrefix.ApiSign.getKey() + clientSign, String.valueOf(new Date().getTime()), (int) CacheKeyPrefix.ApiSign.getTimeout());
     }
 }

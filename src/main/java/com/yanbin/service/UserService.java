@@ -49,7 +49,6 @@ public class UserService {
         this.solrClient = solrClient;
     }
 
-
     public LoginDTO Login(String userName, String password) {
         UserExample userExample = new UserExample();
         userExample.createCriteria().andCodeEqualTo(userName).andPasswordEqualTo(password);
@@ -82,38 +81,9 @@ public class UserService {
         return session;
     }
 
-    public Long addUser(String name) {
-        User user = new User();
-        user.setName(name);
-        user.setCode(name);
-        user.setTenantId(WebUtils.Session.getTenantId());
-        user.setStatusId(Status.Vaild.getValue());
-        user.setId(sequenceService.newKey(SeqType.User));
-        user.setFailedLogins(0);
-        user.setPassword(SHA256.encrypt("888888"));
-        userMapper.insert(user);
-        return user.getId();
-    }
-
-    public void addUser(String name, String sessionId) {
-        WebSession session = webSessionManager.get(sessionId);
-        if (session != null) {
-            User user = new User();
-            user.setName(name);
-            user.setCode(name);
-            user.setTenantId(session.getTenantId());
-            user.setStatusId(Status.Vaild.getValue());
-            user.setId(sequenceService.newKey(SeqType.User));
-            user.setFailedLogins(0);
-            user.setPassword(SHA256.encrypt("888888"));
-            userMapper.insert(user);
-        }
-    }
-
     public User getUser(Long id) {
         return userMapper.selectByPrimaryKey(id);
     }
-
 
     public List<User> solrQueryForMysql(String name) throws IOException, SolrServerException {
         SolrQuery solrQuery = new SolrQuery();

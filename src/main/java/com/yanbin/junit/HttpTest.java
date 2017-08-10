@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.yanbin.Application;
 import com.yanbin.core.utils.SHA256;
 import com.yanbin.model.param.LoginParam;
-import com.yanbin.service.Producer;
 import com.yanbin.service.UserService;
+import com.yanbin.service.commandhandler.CommandBus;
 import com.yanbin.web.UserController;
 import org.junit.Before;
 import org.junit.Test;
@@ -39,16 +39,16 @@ public class HttpTest   {
     UserService userService;
 
     @Autowired
-    Gson gson;
+    CommandBus commandBus;
 
     @Autowired
-    Producer producer;
+    Gson gson;
 
     private MockMvc mvc;
 
     @Before
     public void setUp() throws Exception {
-        mvc = MockMvcBuilders.standaloneSetup(new UserController(userService,producer,gson)).build();
+        mvc = MockMvcBuilders.standaloneSetup(new UserController(userService, commandBus)).build();
     }
 
     @Test

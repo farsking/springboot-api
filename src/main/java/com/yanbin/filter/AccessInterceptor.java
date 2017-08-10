@@ -8,6 +8,7 @@ import com.yanbin.core.utils.WebUtils;
 import com.yanbin.filter.log.TimeoutInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.MDC;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -35,13 +36,16 @@ public class AccessInterceptor implements HandlerInterceptor {
 
     private CacheConfigService configService;
 
+    private BeanFactory beanFactory;
+
     private long beginTime;
 
     @Autowired
-    public AccessInterceptor(WebSessionManager webSessionManager, LogService logService, CacheConfigService cacheConfigService){
+    public AccessInterceptor(WebSessionManager webSessionManager, LogService logService, CacheConfigService cacheConfigService, BeanFactory beanFactory) {
         this.webSessionManager = webSessionManager;
         this.logService = logService;
         this.configService = cacheConfigService;
+        this.beanFactory = beanFactory;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class AccessInterceptor implements HandlerInterceptor {
             MDC.put("url", url);
         }
         MDC.put("method", WebUtils.Http.getMethod(request));
-        WebContext webContext = buildWebContext(request, response);
+        WebContext webContext = buildWebContext(request, response, beanFactory);
         boolean nonSessionValidation = false;
         if (handler instanceof HandlerMethod) {
             ApiMethodAttribute methodAttribute = ((HandlerMethod) handler).getMethod().getAnnotation(ApiMethodAttribute.class);
@@ -82,10 +86,12 @@ public class AccessInterceptor implements HandlerInterceptor {
     }
 
     private WebContext buildWebContext(HttpServletRequest request,
-                                       HttpServletResponse response) {
+                                       HttpServletResponse response,
+                                       BeanFactory beanFactory) {
         WebContext webContext = new WebContext();
         webContext.setRequest(request);
         webContext.setResponse(response);
+        webContext.setBeanFactory(beanFactory);
         ThreadWebContextHolder.setContext(webContext);
         return webContext;
     }

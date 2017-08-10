@@ -40,6 +40,8 @@
     17) Solr示例
     
     18) Scheduling示例
+    
+    19) CQRS简单示例
 
 # Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
