@@ -1,4 +1,4 @@
-package com.yanbin.core.cqrs;
+package com.yanbin.core.cqrs.event;
 
 import com.google.gson.Gson;
 import com.yanbin.core.cache.ICacheClient;
@@ -17,8 +17,9 @@ import java.lang.reflect.Type;
 public class EventUtils {
 
     private ICacheClient redisClient;
+
     @Autowired
-    public EventUtils(RedisClient redisClient){
+    public EventUtils(RedisClient redisClient) {
         this.redisClient = redisClient;
     }
 
@@ -29,7 +30,7 @@ public class EventUtils {
         jmsMessagingTemplate.convertAndSend(destination, gson.toJson(event, typeofSrc));
     }
 
-    public  <E> void pushEvent(String destinationPath, E event, Type typeofSrc, IEventCallback callback) throws InterruptedException {
+    public <E> void pushEvent(String destinationPath, E event, Type typeofSrc, IEventCallback callback) throws InterruptedException {
         Gson gson = ThreadWebContextHolder.getBean("gson");
         JmsMessagingTemplate jmsMessagingTemplate = ThreadWebContextHolder.getBean("jmsMessagingTemplate");
         Destination destination = new ActiveMQQueue(destinationPath);

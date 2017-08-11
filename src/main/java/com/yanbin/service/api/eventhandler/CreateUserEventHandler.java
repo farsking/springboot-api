@@ -1,7 +1,7 @@
 package com.yanbin.service.api.eventhandler;
 
 import com.google.gson.Gson;
-import com.yanbin.core.cqrs.EventUtils;
+import com.yanbin.core.cqrs.event.EventUtils;
 import com.yanbin.core.sequence.ISequence;
 import com.yanbin.core.sequence.SeqType;
 import com.yanbin.core.sequence.SequenceService;

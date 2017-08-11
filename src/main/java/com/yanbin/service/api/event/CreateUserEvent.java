@@ -1,6 +1,6 @@
 package com.yanbin.service.api.event;
 
-import com.yanbin.core.cqrs.Event;
+import com.yanbin.core.cqrs.event.Event;
 
 public class CreateUserEvent extends Event{
     private String name;

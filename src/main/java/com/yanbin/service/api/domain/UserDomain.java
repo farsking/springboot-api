@@ -2,7 +2,7 @@ package com.yanbin.service.api.domain;
 
 import com.google.common.base.Preconditions;
 import com.yanbin.core.content.ThreadWebContextHolder;
-import com.yanbin.core.cqrs.EventUtils;
+import com.yanbin.core.cqrs.event.EventUtils;
 import com.yanbin.core.utils.SHA256;
 import com.yanbin.core.utils.WebUtils;
 import com.yanbin.dao.UserMapper;

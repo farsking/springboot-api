@@ -1,4 +1,4 @@
-package com.yanbin.core.cqrs;
+package com.yanbin.core.cqrs.event;
 
 import com.yanbin.core.utils.UuidUtil;
 
