@@ -41,7 +41,7 @@
     
     18) Scheduling示例
     
-    19) CQRS简单示例
+    19) 简单实现CQRS架构
 
 # Quick Start
      1) 初始化数据库, 在你自己的MySQL中执行/resource/user.sql
