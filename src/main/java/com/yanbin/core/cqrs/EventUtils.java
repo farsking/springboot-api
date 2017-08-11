@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
 @Component
 public class EventUtils {
 
-    ICacheClient redisClient;
+    private ICacheClient redisClient;
     @Autowired
     public EventUtils(RedisClient redisClient){
         this.redisClient = redisClient;
