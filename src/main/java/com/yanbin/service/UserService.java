@@ -1,21 +1,9 @@
 package com.yanbin.service;
 
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import com.yanbin.core.content.ThreadWebContextHolder;
-import com.yanbin.core.content.WebContext;
-import com.yanbin.core.content.WebSession;
-import com.yanbin.core.content.WebSessionManager;
-import com.yanbin.core.sequence.ISequence;
-import com.yanbin.core.sequence.SeqType;
-import com.yanbin.core.sequence.SequenceService;
-import com.yanbin.core.utils.SHA256;
-import com.yanbin.core.utils.WebUtils;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
 import com.yanbin.dao.model.UserExample;
-import com.yanbin.model.dto.LoginDTO;
-import com.yanbin.model.enums.Status;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;

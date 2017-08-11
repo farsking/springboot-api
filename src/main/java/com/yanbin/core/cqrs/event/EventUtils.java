@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.yanbin.core.cache.ICacheClient;
 import com.yanbin.core.cache.RedisClient;
 import com.yanbin.core.content.ThreadWebContextHolder;
+import com.yanbin.core.exception.api.EventHandleTimeoutException;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,17 +39,22 @@ public class EventUtils {
 
         String result;
         Event e = (Event) event;
+        int count = 0;
         while (true) {
             Thread.sleep(1000);
             result = redisClient.get(e.getCacheId());
             if (StringUtils.isNotBlank(result)) {
                 break;
             }
+            count++;
+            if (count>=30){
+                throw new EventHandleTimeoutException();
+            }
         }
         callback.callback(result);
     }
 
     public void finishEvent(Event event, String result) {
-        redisClient.set(event.getCacheId(), result, 10 * 60);
+        redisClient.set(event.getCacheId(), result, 1);
     }
 }
