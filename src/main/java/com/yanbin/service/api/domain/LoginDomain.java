@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import com.yanbin.core.content.ThreadWebContextHolder;
 import com.yanbin.core.content.WebContext;
 import com.yanbin.core.content.WebSessionManager;
-import com.yanbin.core.cqrs.DomainUtils;
+import com.yanbin.core.cqrs.EventUtils;
 import com.yanbin.core.utils.WebUtils;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
@@ -58,10 +58,10 @@ public class LoginDomain {
         User user = users.get(0);
         CreateSessionEvent createSessionEvent = new CreateSessionEvent(webSessionManager.newId(user.getId()), user.getId(), user.getName(),
                 user.getTenantId(), user.getCode(), WebUtils.Session.getDeviceId(webContext.getRequest()), webSessionManager.newSecretKey());
-        DomainUtils.pushEvent(EventDestination.SessionCreateEvent, createSessionEvent, CreateSessionEvent.class);
+        EventUtils.pushEvent(EventDestination.SessionCreateEvent, createSessionEvent, CreateSessionEvent.class);
 
         UpdateUserLoginInfoEvent updateUserLoginInfoEvent = new UpdateUserLoginInfoEvent(user.getId(), new Date(), createSessionEvent.getSessionId());
-        DomainUtils.pushEvent(EventDestination.UserUpdateLoginInfoEvent,updateUserLoginInfoEvent,UpdateUserLoginInfoEvent.class);
+        EventUtils.pushEvent(EventDestination.UserUpdateLoginInfoEvent,updateUserLoginInfoEvent,UpdateUserLoginInfoEvent.class);
 
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setTokenId(createSessionEvent.getSessionId());

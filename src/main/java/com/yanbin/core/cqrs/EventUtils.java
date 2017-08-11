@@ -8,7 +8,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import javax.jms.Destination;
 import java.lang.reflect.Type;
 
-public class DomainUtils {
+public class EventUtils {
 
     public static <E> void pushEvent(String destinationPath,E event,Type typeofSrc){
         Gson gson = ThreadWebContextHolder.getBean("gson");
