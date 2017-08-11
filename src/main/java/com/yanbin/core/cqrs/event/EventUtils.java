@@ -55,6 +55,6 @@ public class EventUtils {
     }
 
     public void finishEvent(Event event, String result) {
-        redisClient.set(event.getCacheId(), result, 1);
+        redisClient.set(event.getCacheId(), result, 60);
     }
 }
