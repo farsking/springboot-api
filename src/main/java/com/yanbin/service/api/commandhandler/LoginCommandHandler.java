@@ -4,7 +4,7 @@ import com.yanbin.core.cqrs.command.ICommandHandler;
 import com.yanbin.service.api.command.LoginCommand;
 import com.yanbin.service.api.domain.LoginDomain;
 
-public class LoginHandler implements ICommandHandler<LoginCommand> {
+public class LoginCommandHandler implements ICommandHandler<LoginCommand> {
     @Override
     public void handler(LoginCommand cmd) {
         LoginDomain loginDomain = new LoginDomain(cmd.getCode(),cmd.getPassword());

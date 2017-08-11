@@ -7,7 +7,7 @@ import com.yanbin.core.sequence.SeqType;
 import com.yanbin.service.api.command.CreateUserCommand;
 import com.yanbin.service.api.domain.UserDomain;
 
-public class CreateUserHandler implements ICommandHandler<CreateUserCommand> {
+public class CreateUserCommandHandler implements ICommandHandler<CreateUserCommand> {
 
     public void handler(CreateUserCommand createUserCommand) {
         ISequence sequence = ThreadWebContextHolder.getContext().getBean("sequenceService");
