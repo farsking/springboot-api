@@ -1,4 +1,4 @@
-package com.yanbin.service.api.domain;
+package com.yanbin.core.cqrs;
 
 import com.google.gson.Gson;
 import com.yanbin.core.content.ThreadWebContextHolder;

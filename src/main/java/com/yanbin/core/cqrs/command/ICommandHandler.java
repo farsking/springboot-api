@@ -1,4 +1,4 @@
-package com.yanbin.service.api.commandhandler;
+package com.yanbin.core.cqrs.command;
 
 public interface ICommandHandler<T> {
     void handler(T cmd);

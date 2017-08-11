@@ -5,7 +5,7 @@ import com.yanbin.Application;
 import com.yanbin.core.utils.SHA256;
 import com.yanbin.model.param.LoginParam;
 import com.yanbin.service.UserService;
-import com.yanbin.service.api.commandhandler.CommandBus;
+import com.yanbin.core.cqrs.command.CommandBus;
 import com.yanbin.web.UserController;
 import org.junit.Before;
 import org.junit.Test;

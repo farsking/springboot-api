@@ -1,4 +1,4 @@
-package com.yanbin.service.api.commandhandler;
+package com.yanbin.core.cqrs.command;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

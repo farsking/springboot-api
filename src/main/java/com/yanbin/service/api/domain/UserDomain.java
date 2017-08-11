@@ -1,12 +1,14 @@
 package com.yanbin.service.api.domain;
 
-import com.google.gson.Gson;
+import com.google.common.base.Preconditions;
 import com.yanbin.core.content.ThreadWebContextHolder;
+import com.yanbin.core.cqrs.DomainUtils;
 import com.yanbin.core.utils.SHA256;
 import com.yanbin.core.utils.WebUtils;
+import com.yanbin.dao.UserMapper;
+import com.yanbin.dao.model.UserExample;
 import com.yanbin.service.api.event.CreateUserEvent;
 import com.yanbin.service.api.eventhandler.EventDestination;
-import org.springframework.jms.core.JmsMessagingTemplate;
 
 
 public class UserDomain {
@@ -41,6 +43,10 @@ public class UserDomain {
     }
 
     public void createUser() {
+        UserMapper userMapper = ThreadWebContextHolder.getBean("userMapper");
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andCodeEqualTo(mobile);
+        Preconditions.checkArgument(userMapper.countByExample(userExample)==0,"用户已存在");
         CreateUserEvent createUserEvent = new CreateUserEvent(name, password, mobile, code, id, WebUtils.Session.getId());
         DomainUtils.pushEvent(EventDestination.UserCreateEvent,createUserEvent,CreateUserEvent.class);
     }

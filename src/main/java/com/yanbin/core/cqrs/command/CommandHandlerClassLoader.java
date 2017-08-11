@@ -1,4 +1,4 @@
-package com.yanbin.service.api.commandhandler;
+package com.yanbin.core.cqrs.command;
 
 import com.google.common.collect.Lists;
 
@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-public class ClassLoader {
+public class CommandHandlerClassLoader {
 
-    public ClassLoader(String packageName) {
+    public CommandHandlerClassLoader(String packageName) {
         commandHandlers = Lists.newArrayList();
         load(packageName);
     }

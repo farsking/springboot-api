@@ -7,7 +7,7 @@ import com.yanbin.model.param.UserParam;
 import com.yanbin.service.UserService;
 import com.yanbin.service.api.command.CreateUserCommand;
 import com.yanbin.service.api.command.LoginCommand;
-import com.yanbin.service.api.commandhandler.CommandBus;
+import com.yanbin.core.cqrs.command.CommandBus;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
