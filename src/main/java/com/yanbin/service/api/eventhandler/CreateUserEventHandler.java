@@ -1,6 +1,7 @@
 package com.yanbin.service.api.eventhandler;
 
 import com.google.gson.Gson;
+import com.yanbin.core.cqrs.EventUtils;
 import com.yanbin.core.sequence.ISequence;
 import com.yanbin.core.sequence.SeqType;
 import com.yanbin.core.sequence.SequenceService;
@@ -16,12 +17,14 @@ public class CreateUserEventHandler {
     private UserMapper userMapper;
     private Gson gson;
     private ISequence sequence;
+    private EventUtils eventUtils;
 
     @Autowired
-    public CreateUserEventHandler(UserMapper userMapper, Gson gson, SequenceService sequence){
+    public CreateUserEventHandler(UserMapper userMapper, Gson gson, SequenceService sequence,EventUtils eventUtils){
         this.userMapper = userMapper;
         this.gson = gson;
         this.sequence = sequence;
+        this.eventUtils = eventUtils;
     }
 
     @JmsListener(destination = EventDestination.UserCreateEvent)
@@ -38,6 +41,7 @@ public class CreateUserEventHandler {
         user.setTenantId(0L);
         user.setSession(createUserEvent.getSessionId());
         userMapper.insert(user);
+        eventUtils.finishEvent(createUserEvent,"true");
     }
 
 

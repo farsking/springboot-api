@@ -46,8 +46,9 @@ public class LoginDomain {
         this.secretKey = secretKey;
     }
 
-    public LoginDTO Login() {
+    public LoginDTO Login() throws InterruptedException {
         UserMapper userMapper = ThreadWebContextHolder.getBean("userMapper");
+        EventUtils eventUtils = ThreadWebContextHolder.getBean("eventUtils");
         WebContext webContext = ThreadWebContextHolder.getContext();
         WebSessionManager webSessionManager = ThreadWebContextHolder.getBean("webSessionManager");
         UserExample userExample = new UserExample();
@@ -58,10 +59,10 @@ public class LoginDomain {
         User user = users.get(0);
         CreateSessionEvent createSessionEvent = new CreateSessionEvent(webSessionManager.newId(user.getId()), user.getId(), user.getName(),
                 user.getTenantId(), user.getCode(), WebUtils.Session.getDeviceId(webContext.getRequest()), webSessionManager.newSecretKey());
-        EventUtils.pushEvent(EventDestination.SessionCreateEvent, createSessionEvent, CreateSessionEvent.class);
+        eventUtils.pushEvent(EventDestination.SessionCreateEvent, createSessionEvent, CreateSessionEvent.class, System.out::println);
 
         UpdateUserLoginInfoEvent updateUserLoginInfoEvent = new UpdateUserLoginInfoEvent(user.getId(), new Date(), createSessionEvent.getSessionId());
-        EventUtils.pushEvent(EventDestination.UserUpdateLoginInfoEvent,updateUserLoginInfoEvent,UpdateUserLoginInfoEvent.class);
+        eventUtils.pushEvent(EventDestination.UserUpdateLoginInfoEvent, updateUserLoginInfoEvent, UpdateUserLoginInfoEvent.class,System.out::println);
 
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setTokenId(createSessionEvent.getSessionId());

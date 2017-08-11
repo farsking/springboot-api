@@ -44,10 +44,11 @@ public class UserDomain {
 
     public void createUser() {
         UserMapper userMapper = ThreadWebContextHolder.getBean("userMapper");
+        EventUtils eventUtils = ThreadWebContextHolder.getBean("eventUtils");
         UserExample userExample = new UserExample();
         userExample.createCriteria().andCodeEqualTo(mobile);
         Preconditions.checkArgument(userMapper.countByExample(userExample)==0,"用户已存在");
         CreateUserEvent createUserEvent = new CreateUserEvent(name, password, mobile, code, id, WebUtils.Session.getId());
-        EventUtils.pushEvent(EventDestination.UserCreateEvent,createUserEvent,CreateUserEvent.class);
+        eventUtils.pushEvent(EventDestination.UserCreateEvent,createUserEvent,CreateUserEvent.class);
     }
 }

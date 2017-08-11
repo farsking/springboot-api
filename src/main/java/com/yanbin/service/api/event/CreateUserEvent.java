@@ -1,8 +1,8 @@
 package com.yanbin.service.api.event;
 
-import java.io.Serializable;
+import com.yanbin.core.cqrs.Event;
 
-public class CreateUserEvent implements Serializable{
+public class CreateUserEvent extends Event{
     private String name;
     private String password;
     private String mobile;
@@ -11,6 +11,7 @@ public class CreateUserEvent implements Serializable{
     private String sessionId;
 
     public CreateUserEvent(String name, String password, String mobile, String code, Long id,String sessionId) {
+        super("CreateUserEvent");
         this.name = name;
         this.password = password;
         this.mobile = mobile;

@@ -1,6 +1,8 @@
 package com.yanbin.service.api.event;
 
-public class CreateSessionEvent {
+import com.yanbin.core.cqrs.Event;
+
+public class CreateSessionEvent extends Event {
     private String sessionId;
     private Long userId;
     private Long tenantId;
@@ -10,6 +12,7 @@ public class CreateSessionEvent {
     private String userName;
 
     public CreateSessionEvent(String sessionId, Long userId, String userName,Long tenantId, String code, String deviceId,String secretKey) {
+        super("CreateSessionEvent");
         this.sessionId = sessionId;
         this.userId = userId;
         this.tenantId = tenantId;

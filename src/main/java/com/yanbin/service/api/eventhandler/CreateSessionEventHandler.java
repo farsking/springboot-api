@@ -5,7 +5,7 @@ import com.yanbin.core.content.ThreadWebContextHolder;
 import com.yanbin.core.content.WebContext;
 import com.yanbin.core.content.WebSession;
 import com.yanbin.core.content.WebSessionManager;
-import com.yanbin.core.sequence.ISequence;
+import com.yanbin.core.cqrs.EventUtils;
 import com.yanbin.core.utils.WebUtils;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
@@ -20,12 +20,14 @@ public class CreateSessionEventHandler {
     private WebSessionManager webSessionManager;
     private Gson gson;
     private UserMapper userMapper;
+    private EventUtils eventUtils;
 
     @Autowired
-    public CreateSessionEventHandler(WebSessionManager webSessionManager, Gson gson,UserMapper userMapper){
+    public CreateSessionEventHandler(WebSessionManager webSessionManager, Gson gson,UserMapper userMapper,EventUtils eventUtils){
         this.gson = gson;
         this.webSessionManager = webSessionManager;
         this.userMapper = userMapper;
+        this.eventUtils = eventUtils;
     }
 
     @JmsListener(destination = EventDestination.SessionCreateEvent)
@@ -43,6 +45,7 @@ public class CreateSessionEventHandler {
         if (webContext != null) {
             ThreadWebContextHolder.getContext().setWebSession(session);
         }
+        eventUtils.finishEvent(createSessionEvent,"true");
     }
 
     @JmsListener(destination = EventDestination.UserUpdateLoginInfoEvent)
@@ -52,5 +55,6 @@ public class CreateSessionEventHandler {
         user.setLoginDate(updateUserLoginInfoEvent.getDate());
         user.setSession(updateUserLoginInfoEvent.getSessionId());
         userMapper.updateByPrimaryKeySelective(user);
+        eventUtils.finishEvent(updateUserLoginInfoEvent,"true");
     }
 }

@@ -12,7 +12,7 @@ public class CommandBus {
         this.handlers = handlers;
     }
 
-    public <TCommand> void Send(TCommand cmd) {
+    public <TCommand> void Send(TCommand cmd) throws InterruptedException {
         for (ICommandHandler handler : handlers) {
             Type handerType = handler.getClass().getGenericInterfaces()[0];
             Type temp = ((ParameterizedType) handerType).getActualTypeArguments()[0];

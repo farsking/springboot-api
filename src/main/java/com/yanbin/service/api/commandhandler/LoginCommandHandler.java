@@ -6,7 +6,7 @@ import com.yanbin.service.api.domain.LoginDomain;
 
 public class LoginCommandHandler implements ICommandHandler<LoginCommand> {
     @Override
-    public void handler(LoginCommand cmd) {
+    public void handler(LoginCommand cmd) throws InterruptedException {
         LoginDomain loginDomain = new LoginDomain(cmd.getCode(),cmd.getPassword());
         cmd.setResult(loginDomain.Login());
     }
