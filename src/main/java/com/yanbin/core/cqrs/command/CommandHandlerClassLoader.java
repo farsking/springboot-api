@@ -137,11 +137,7 @@ public class CommandHandlerClassLoader {
             if (ICommandHandler.class.isAssignableFrom(c)) {
                 commandHandlers.add((ICommandHandler) c.newInstance());
             }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
     }
