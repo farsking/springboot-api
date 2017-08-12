@@ -1,10 +1,10 @@
 package com.yanbin.service.api.eventhandler;
 
 import com.google.gson.Gson;
-import com.yanbin.core.cqrs.event.EventUtils;
-import com.yanbin.core.sequence.ISequence;
-import com.yanbin.core.sequence.SeqType;
-import com.yanbin.core.sequence.SequenceService;
+import com.yanbin.core.cqrs.event.EventBus;
+import com.yanbin.service.base.ISequence;
+import com.yanbin.model.enums.SeqType;
+import com.yanbin.service.base.SequenceService;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
 import com.yanbin.service.api.event.CreateUserEvent;
@@ -17,10 +17,10 @@ public class CreateUserEventHandler {
     private UserMapper userMapper;
     private Gson gson;
     private ISequence sequence;
-    private EventUtils eventUtils;
+    private EventBus eventUtils;
 
     @Autowired
-    public CreateUserEventHandler(UserMapper userMapper, Gson gson, SequenceService sequence,EventUtils eventUtils){
+    public CreateUserEventHandler(UserMapper userMapper, Gson gson, SequenceService sequence, EventBus eventUtils){
         this.userMapper = userMapper;
         this.gson = gson;
         this.sequence = sequence;

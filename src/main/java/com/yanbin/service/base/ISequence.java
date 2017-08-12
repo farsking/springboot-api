@@ -1,4 +1,6 @@
-package com.yanbin.core.sequence;
+package com.yanbin.service.base;
+
+import com.yanbin.model.enums.SeqType;
 
 import java.util.List;
 

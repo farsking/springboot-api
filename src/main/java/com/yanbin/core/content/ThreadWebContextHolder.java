@@ -19,12 +19,10 @@ public class ThreadWebContextHolder {
 
     public static <T> T getBean(String name) {
         WebContext webContext = THREAD_LOCAL.get();
-        if (webContext!=null) {
+        if (webContext != null) {
             return THREAD_LOCAL.get().getBean(name);
-        }
-        else {
+        } else {
             return null;
         }
     }
-
 }

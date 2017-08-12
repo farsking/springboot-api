@@ -5,7 +5,7 @@ import com.yanbin.core.content.ThreadWebContextHolder;
 import com.yanbin.core.content.WebContext;
 import com.yanbin.core.content.WebSession;
 import com.yanbin.core.content.WebSessionManager;
-import com.yanbin.core.cqrs.event.EventUtils;
+import com.yanbin.core.cqrs.event.EventBus;
 import com.yanbin.core.utils.WebUtils;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
@@ -20,10 +20,10 @@ public class CreateSessionEventHandler {
     private WebSessionManager webSessionManager;
     private Gson gson;
     private UserMapper userMapper;
-    private EventUtils eventUtils;
+    private EventBus eventUtils;
 
     @Autowired
-    public CreateSessionEventHandler(WebSessionManager webSessionManager, Gson gson,UserMapper userMapper,EventUtils eventUtils){
+    public CreateSessionEventHandler(WebSessionManager webSessionManager, Gson gson, UserMapper userMapper, EventBus eventUtils){
         this.gson = gson;
         this.webSessionManager = webSessionManager;
         this.userMapper = userMapper;

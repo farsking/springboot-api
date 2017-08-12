@@ -1,4 +1,4 @@
-package com.yanbin.core.sequence;
+package com.yanbin.service.base;
 
 /**
  * Created by yanbin on 2017/7/8.

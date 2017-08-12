@@ -4,15 +4,17 @@ import com.google.common.base.Preconditions;
 import com.yanbin.core.content.ThreadWebContextHolder;
 import com.yanbin.core.content.WebContext;
 import com.yanbin.core.content.WebSessionManager;
-import com.yanbin.core.cqrs.event.EventUtils;
+import com.yanbin.core.cqrs.event.EventBus;
 import com.yanbin.core.utils.WebUtils;
 import com.yanbin.dao.UserMapper;
 import com.yanbin.dao.model.User;
 import com.yanbin.dao.model.UserExample;
 import com.yanbin.model.dto.LoginDTO;
+import com.yanbin.model.enums.SeqType;
 import com.yanbin.service.api.event.CreateSessionEvent;
 import com.yanbin.service.api.event.UpdateUserLoginInfoEvent;
 import com.yanbin.service.api.eventhandler.EventDestination;
+import com.yanbin.service.base.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -47,10 +49,10 @@ public class LoginDomain {
     }
 
     public LoginDTO Login() throws InterruptedException {
-        UserMapper userMapper = ThreadWebContextHolder.getBean("userMapper");
-        EventUtils eventUtils = ThreadWebContextHolder.getBean("eventUtils");
+        UserMapper userMapper = BeanUtils.getMapper(SeqType.User);
+        EventBus eventBus = BeanUtils.getEventBus();
         WebContext webContext = ThreadWebContextHolder.getContext();
-        WebSessionManager webSessionManager = ThreadWebContextHolder.getBean("webSessionManager");
+        WebSessionManager webSessionManager = BeanUtils.getWebSessionManager();
         UserExample userExample = new UserExample();
         userExample.createCriteria().andCodeEqualTo(code).andPasswordEqualTo(password);
         List<User> users = userMapper.selectByExample(userExample);
@@ -59,10 +61,10 @@ public class LoginDomain {
         User user = users.get(0);
         CreateSessionEvent createSessionEvent = new CreateSessionEvent(webSessionManager.newId(user.getId()), user.getId(), user.getName(),
                 user.getTenantId(), user.getCode(), WebUtils.Session.getDeviceId(webContext.getRequest()), webSessionManager.newSecretKey());
-        eventUtils.pushEvent(EventDestination.SessionCreateEvent, createSessionEvent, CreateSessionEvent.class, System.out::println);
+        eventBus.pushEvent(EventDestination.SessionCreateEvent, createSessionEvent, CreateSessionEvent.class, System.out::println);
 
         UpdateUserLoginInfoEvent updateUserLoginInfoEvent = new UpdateUserLoginInfoEvent(user.getId(), new Date(), createSessionEvent.getSessionId());
-        eventUtils.pushEvent(EventDestination.UserUpdateLoginInfoEvent, updateUserLoginInfoEvent, UpdateUserLoginInfoEvent.class,System.out::println);
+        eventBus.pushEvent(EventDestination.UserUpdateLoginInfoEvent, updateUserLoginInfoEvent, UpdateUserLoginInfoEvent.class,System.out::println);
 
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setTokenId(createSessionEvent.getSessionId());

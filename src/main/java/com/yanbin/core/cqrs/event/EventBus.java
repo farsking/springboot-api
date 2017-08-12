@@ -15,12 +15,12 @@ import javax.jms.Destination;
 import java.lang.reflect.Type;
 
 @Component
-public class EventUtils {
+public class EventBus {
 
     private ICacheClient redisClient;
 
     @Autowired
-    public EventUtils(RedisClient redisClient) {
+    public EventBus(RedisClient redisClient) {
         this.redisClient = redisClient;
     }
 
