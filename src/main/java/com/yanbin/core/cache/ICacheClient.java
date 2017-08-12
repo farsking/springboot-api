@@ -20,4 +20,5 @@ public interface ICacheClient {
     void deleteKeys(String prefix);
 
     boolean hasKey(String key);
+
 }

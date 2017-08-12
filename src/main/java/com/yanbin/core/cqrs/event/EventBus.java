@@ -3,7 +3,6 @@ package com.yanbin.core.cqrs.event;
 import com.google.gson.Gson;
 import com.yanbin.core.cache.ICacheClient;
 import com.yanbin.core.cache.RedisClient;
-import com.yanbin.core.content.ThreadWebContextHolder;
 import com.yanbin.core.exception.api.EventHandleTimeoutException;
 import org.apache.activemq.command.ActiveMQQueue;
 import org.apache.commons.lang3.StringUtils;
@@ -18,22 +17,22 @@ import java.lang.reflect.Type;
 public class EventBus {
 
     private ICacheClient redisClient;
+    private Gson gson;
+    private JmsMessagingTemplate jmsMessagingTemplate;
 
     @Autowired
-    public EventBus(RedisClient redisClient) {
+    public EventBus(RedisClient redisClient,Gson gson,JmsMessagingTemplate jmsMessagingTemplate) {
         this.redisClient = redisClient;
+        this.gson = gson;
+        this.jmsMessagingTemplate = jmsMessagingTemplate;
     }
 
     public <E> void pushEvent(String destinationPath, E event, Type typeofSrc) {
-        Gson gson = ThreadWebContextHolder.getBean("gson");
-        JmsMessagingTemplate jmsMessagingTemplate = ThreadWebContextHolder.getBean("jmsMessagingTemplate");
         Destination destination = new ActiveMQQueue(destinationPath);
         jmsMessagingTemplate.convertAndSend(destination, gson.toJson(event, typeofSrc));
     }
 
     public <E> void pushEvent(String destinationPath, E event, Type typeofSrc, IEventCallback callback) throws InterruptedException {
-        Gson gson = ThreadWebContextHolder.getBean("gson");
-        JmsMessagingTemplate jmsMessagingTemplate = ThreadWebContextHolder.getBean("jmsMessagingTemplate");
         Destination destination = new ActiveMQQueue(destinationPath);
         jmsMessagingTemplate.convertAndSend(destination, gson.toJson(event, typeofSrc));
 
