@@ -1,5 +1,7 @@
 package com.yanbin.core.content;
 
+import org.springframework.beans.factory.BeanFactory;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -15,6 +17,20 @@ public class WebContext {
     private HttpServletResponse response;
 
     private HttpServletRequest request;
+
+    private BeanFactory beanFactory;
+
+    public BeanFactory getBeanFactory() {
+        return beanFactory;
+    }
+
+    public void setBeanFactory(BeanFactory beanFactory) {
+        this.beanFactory = beanFactory;
+    }
+
+    public <T> T getBean(String name){
+        return (T) beanFactory.getBean(name);
+    }
 
     private String token;
 

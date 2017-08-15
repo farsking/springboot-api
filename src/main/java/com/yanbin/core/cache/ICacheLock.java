@@ -5,5 +5,7 @@ package com.yanbin.core.cache;
  */
 public interface ICacheLock {
 
+    boolean lock(String key, int waitTime, int expire) throws InterruptedException;
 
+    boolean unlock(String key);
 }

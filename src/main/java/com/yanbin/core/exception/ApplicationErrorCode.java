@@ -12,7 +12,8 @@ public enum ApplicationErrorCode {
     IOException("20005", "IO异常"),
     InvalidSign("20006", "无效的签名"),
     UsedSignature("20007", "签名已使用"),
-    RedisLockException("20008","获取锁异常")
+    RedisLockException("20008","获取锁异常"),
+    EventHandlerTimeout("20009","事件处理超时"),
     ;
 
     private String code;

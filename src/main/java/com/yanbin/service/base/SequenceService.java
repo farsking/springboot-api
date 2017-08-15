@@ -1,6 +1,7 @@
-package com.yanbin.core.sequence;
+package com.yanbin.service.base;
 
 import com.google.common.collect.Lists;
+import com.yanbin.model.enums.SeqType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;

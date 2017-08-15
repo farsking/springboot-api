@@ -3,6 +3,8 @@ package com.yanbin.config;
 import com.google.gson.Gson;
 import com.yanbin.filter.AccessInterceptor;
 import com.yanbin.filter.DuplicationInterceptor;
+import com.yanbin.core.cqrs.command.CommandBus;
+import com.yanbin.core.cqrs.command.CommandHandlerClassLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +48,11 @@ public class WebConfig extends  WebMvcConfigurerAdapter {
         return new Gson();
     }
 
-
+    @Bean
+    public CommandBus commandBus(){
+        CommandHandlerClassLoader classLoader = new CommandHandlerClassLoader("com.yanbin.service.api.commandhandler");
+        return new CommandBus(classLoader.getCommandHandlers());
+    }
 
 
 }
